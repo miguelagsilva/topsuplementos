@@ -1,0 +1,96 @@
+# Python specific files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+
+# Virtual environment
+venv/
+.env
+.env.*
+
+# Django-specific
+db.sqlite3
+db.sqlite3-journal
+
+# Local settings
+settings_local.py
+
+# Migrations
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.pyd
+
+# Media/uploads
+media/
+
+# Static files
+staticfiles/
+static/
+
+# Logs
+*.log
+logs/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node modules (if using Node.js for front-end assets)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Test database
+test_db.sqlite3
+
+# Compiled files
+*.mo
+*.pot
+
+# Temporary files
+*.swp
+*.swo
+*.swn
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# MySQL
+*.pid
+*.sock
+
+# Pipenv files (if using Pipenv)
+Pipfile.lock
+
+# MacOS specific files
+._*
+.Spotlight-V100
+.Trashes
+
+# Build files (for packaging/distribution)
+build/
+dist/

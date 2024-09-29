@@ -1,0 +1,22 @@
+{% load static %}
+
+<!-- Link to your custom CSS -->
+<link rel="stylesheet" href="{% static 'supplements/style.css' %}">
+
+<!-- Container for the list -->
+<div class="protein-container">
+  <ul class="protein-list">
+    {% for protein_powder in protein_powder_list %}
+    <li class="protein-item">
+      <a href="{% url 'supplements:detail' protein_powder.id %}" class="protein-link">
+        <img src="{{ protein_powder.image.url }}" alt="{{ protein_powder.name }}" class="protein-image">
+        <div class="protein-details">
+          <span class="protein-name">{{ protein_powder.name }}</span>
+          <span class="protein-price">{{ protein_powder.price }} EUR</span>
+          <span class="protein-price-per-kg">{{ protein_powder.get_price_per_kg }} EUR/kg</span>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
