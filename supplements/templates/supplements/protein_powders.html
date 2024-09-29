@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,45 +9,66 @@
     <title>Protein Powders Ranking</title>
 </head>
 <body>
-    <header class="header">
-        <h1>Whey Protein Ranking</h1>
-        <p>Sorted by best price per kg</p>
+    <header class="navbar">
+      <ul class="navbar-left">
+        <li>
+          <a href="{% url 'supplements:protein_powders' %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-medal">
+              <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/>
+              <path d="m13 12 5.88-9.8"/>
+              <path d="M8 7h8"/>
+              <circle cx="12" cy="17" r="5"/>
+              <path d="M12 18v-2h-.5"/>
+            </svg>
+            TopSuplementos
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-right">
+        <li><a class="navbar-active" href="{% url 'supplements:protein_powders' %}">Proteína Whey</a></li>
+        <li><a href="{% url 'supplements:protein_powders' %}">Creatina</a></li>
+      </ul>
     </header>
+    <div class="protein-type-buttons">
+        {% for key, value in protein_powders.items %}
+            <button class="protein-type-button" data-type="{{ key }}">{{ value.0 }}</button>
+        {% endfor %}
+    </div>
     <main class="container">
         {% for key, value in protein_powders.items %}
-            <section class="protein-type">
+            <section class="protein-type" data-type="{{ key }}">
                 <h2>{{ value.0 }}</h2>
                 <div class="protein-list">
-                    {% for protein_powder_pair in value.1 %}
-                        <article class="supplement-card" onclick="location.href='{% url 'supplements:detail' protein_powder_pair.0.id %}'">
+                    {% for protein_powder_list in value.1 %}
+                        <article class="supplement-card" onclick="location.href='{% url 'supplements:detail' protein_powder_list.0.id %}'">
                             <div class="rank">{{ forloop.counter }}</div>
-                            <img src="{{ protein_powder_pair.0.image.url }}" alt="{{ protein_powder_pair.0.name }}" class="supplement-image">
+                            <img src="{{ protein_powder_list.0.image.url }}" alt="{{ protein_powder_list.0.name }}" class="supplement-image">
                             <div class="supplement-info">
-                                <h3 class="brand-name">{{ protein_powder_pair.0.brand.name }}</h3>
-                                <p class="product-name">{{ protein_powder_pair.0.name }}</p>
+                                <h3 class="brand-name">{{ protein_powder_list.0.brand.name }}</h3>
+                                <p class="product-name">{{ protein_powder_list.0.name }}</p>
                             </div>
                             <div class="price-weight-info">
                                 <div class="info-item price">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-euro">
-                                    <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
-                                    <path d="M7 12h5"/>
-                                    <path d="M15 9.4a4 4 0 1 0 0 5.2"/>
-                                  </svg>
-                                    {% if protein_powder_pair.1 %}
-                                        <p>{{ protein_powder_pair.0.formatted_price }} - {{ protein_powder_pair.1.formatted_price }}</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-euro">
+                                        <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+                                        <path d="M7 12h5"/>
+                                        <path d="M15 9.4a4 4 0 1 0 0 5.2"/>
+                                    </svg>
+                                    {% if protein_powder_list.1 %}
+                                        <p>{{ protein_powder_list.0.formatted_price }} - {{ protein_powder_list.1.formatted_price }}</p>
                                     {% else %}
-                                        <p>{{ protein_powder_pair.0.formatted_price }}</p>
+                                        <p>{{ protein_powder_list.0.formatted_price }}</p>
                                     {% endif %}
                                 </div>
                                 <div class="info-item weight">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-weight">
-                                    <circle cx="12" cy="5" r="3"/>
-                                    <path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/>
-                                  </svg>
-                                    {% if protein_powder_pair.1 %}
-                                        <p>{{ protein_powder_pair.0.formatted_weight }} - {{ protein_powder_pair.1.formatted_weight }}</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-weight">
+                                        <circle cx="12" cy="5" r="3"/>
+                                        <path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/>
+                                    </svg>
+                                    {% if protein_powder_list.1 %}
+                                        <p>{{ protein_powder_list.0.formatted_weight }} - {{ protein_powder_list.1.formatted_weight }}</p>
                                     {% else %}
-                                        <p>{{ protein_powder_pair.0.formatted_weight }}</p>
+                                        <p>{{ protein_powder_list.0.formatted_weight }}</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -58,5 +80,41 @@
             </section>
         {% endfor %}
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.protein-type-button');
+            const sections = document.querySelectorAll('.protein-type');
+
+            function showProteinType(type) {
+                sections.forEach(section => {
+                    if (section.dataset.type === type) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+
+                buttons.forEach(button => {
+                    if (button.dataset.type === type) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    showProteinType(this.dataset.type);
+                });
+            });
+
+            // Show the first protein type by default
+            if (buttons.length > 0) {
+                showProteinType(buttons[0].dataset.type);
+            }
+        });
+    </script>
 </body>
 </html>

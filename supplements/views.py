@@ -17,8 +17,8 @@ def get_top_protein_powders(protein_type):
             unique_powders[powder.name].append(powder)
 
         for name, powders in unique_powders.items():
-            sorted_powders = sorted(powders, key=lambda x: x.price, reverse=True)[:2]
-            protein_powders.append(tuple(sorted_powders))
+            sorted_powders = sorted(powders, key=lambda x: x.price, reverse=True)
+            protein_powders.append(sorted_powders)
 
     # Calculate the average price per kg for weights between 900g and 2.5kg
     def average_price_per_kg(item):
@@ -52,10 +52,9 @@ def protein_powders(request):
     context = {
         'protein_powders': {
             'concentrate_protein_powders': ['Concentrada', get_top_protein_powders('concentrate')],
-            'hydrolyzed_protein_powders': ['Hidrolizada', get_top_protein_powders('hydrolyzed')],
             'isolate_protein_powders': ['Isolada', get_top_protein_powders('isolate')],
             'clear_protein_powders': ['Clear', get_top_protein_powders('clear')],
-            'blend_protein_powders': ['Clear', get_top_protein_powders('blend')],
+            'blend_protein_powders': ['Blend', get_top_protein_powders('blend')],
         }
     }
 

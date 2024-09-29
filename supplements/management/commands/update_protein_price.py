@@ -65,10 +65,12 @@ class Command(BaseCommand):
     help = 'Scrape the protein powder price and update the model'
 
     def handle(self, *args, **options):
+        self.handle_zumub()
+        self.handle_corposflex()
+        self.handle_nutrimania()
         self.handle_nutrystore()
         self.handle_bulk()
         self.handle_eu_nutrition()
-        self.handle_zumub()
         self.handle_prozis()
         self.handle_hsn()
         self.handle_marvelous()
@@ -76,19 +78,34 @@ class Command(BaseCommand):
         self.handle_wayup()
         self.handle_masmusculo()
         self.handle_life_pro()
+        self.handle_corposflex()
 
     def handle_zumub(self):
         products = [
-            (10328, 2000, "concentrate", 'div.op-price-10328 b.real_price'),
-            (10326, 1000, "concentrate", 'div.op-price-10326 b.real_price'),
-            (10327, 500, "concentrate", 'div.op-price-10327 b.real_price'),
-            (9138, 2000, "isolate", 'div.op-price-9138 b.real_price'),
-            (9125, 1000, "isolate", 'div.op-price-9125 b.real_price'),
-            (9126, 500, "isolate", 'div.op-price-9126 b.real_price'),
+            (4730, 1000, "blend", "qnt"),
+            (4731, 2200, "blend", "qnt"),
+            (7731, 454, "blend", "biotech"),
+            (7903, 1000, "blend", "biotech"),
+            (7756, 2270, "blend", "biotech"),
+            (1937, 900, "blend", "mutant"),
+            (1938, 2270, "blend", "mutant"),
+            (4351, 4540, "blend", "mutant"),
+            (1114, 920, "blend", "scitec_nutrition"),
+            (1117, 2350, "blend", "scitec_nutrition"),
+            (2085, 5000, "blend", "scitec_nutrition"),
+            (10384, 4000, "concentrate", "zumub"),
+            (10328, 2000, "concentrate", "zumub"),
+            (10326, 1000, "concentrate", "zumub"),
+            (10327, 500, "concentrate", "zumub"),
+            (9158, 4000, "isolate", "zumub"),
+            (9138, 2000, "isolate", "zumub"),
+            (9125, 1000, "isolate", "zumub"),
+            (9126, 500, "isolate", "zumub"),
         ]
 
-        for product_id, weight, product_type, price_selector in products:
-            product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code='zumub')
+        for product_id, weight, product_type, brand_code in products:
+            product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code=brand_code)
+            price_selector = f'div.op-price-{product_id} b.real_price'
             fetch_and_update_price(
                 product,
                 price_selector=price_selector,
@@ -106,15 +123,16 @@ class Command(BaseCommand):
 
     def handle_hsn(self):
         products = [
-            (1854, 16688, 500, "concentrate", 'div#product-price-16688'),
-            (3486, 16688, 2000, "concentrate", 'div#product-price-16688'),
-            (1854, 12822, 500, "isolate", 'div#product-price-12822'),
-            (3486, 12822, 2000, "isolate", 'div#product-price-12822')
+            (1854, 16688, 500, "concentrate"),
+            (3486, 16688, 2000, "concentrate"),
+            (1854, 12822, 500, "isolate"),
+            (3486, 12822, 2000, "isolate"),
         ]
 
-        for button_id, price_id, weight, product_type, price_selector in products:
+        for button_id, price_id, weight, product_type in products:
             product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code='hsn')
             click_selector = f'label[for="super_attribute[156]_{button_id}"]'
+            price_selector = f'div#product-price-{price_id}'
             fetch_and_update_price(
                 product,
                 click_selector=click_selector,
@@ -239,6 +257,42 @@ class Command(BaseCommand):
         for product_id, weight, product_type, brand_code in products:
             product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code=brand_code)
             price_selector = f'div[id="conteudo_preco_{product_id}"] strong'
+            fetch_and_update_price(
+                product,
+                price_selector=price_selector,
+            )
+
+    def handle_nutrimania(self):
+        products = [
+            (450, "concentrate", "sis"),
+            (1350, "concentrate", "sis"),
+        ]
+        price_selector = 'div[class="detalhe_preco"] strong'
+
+        for weight, product_type, brand_code in products:
+            product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code=brand_code)
+            fetch_and_update_price(
+                product,
+                price_selector=price_selector,
+            )
+
+    def handle_corposflex(self):
+        products = [
+            (2270, "isolate", "biotech", "Iso Whey Zero Black"),
+            (2270, "isolate", "biotech", "Iso Whey Zero"),
+            (1810, "blend", "muscletech", ""),
+            (2270, "blend", "muscletech", ""),
+            (2200, "hydrolyzed", "dymatize", ""),
+        ]
+        price_selector = 'div[class="product-options"] span[class="price-new"]'
+
+        for weight, product_type, brand_code, product_name in products:
+            product = None
+            if product_name != "":
+                product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code=brand_code, name=product_name)
+            else:
+                product = ProteinPowder.objects.get(weight=weight, type=product_type, brand__code=brand_code)
+
             fetch_and_update_price(
                 product,
                 price_selector=price_selector,

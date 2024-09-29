@@ -13,7 +13,6 @@ class Brand(models.Model):
 class ProteinPowder(models.Model):
     PROTEIN_TYPE_CHOICES = [
         ('isolate', 'Isolado'),
-        ('hydrolyzed', 'Hidrolisado'),
         ('concentrate', 'Concentrado'),
         ('clear', 'Clear'),
         ('blend', 'Blend'),
