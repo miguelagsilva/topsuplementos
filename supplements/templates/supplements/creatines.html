@@ -12,7 +12,7 @@
     <header class="navbar">
       <ul class="navbar-left">
         <li>
-          <a href="{% url 'supplements:protein_powders' %}">
+          <a href="{% url 'supplements:creatines' %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-medal">
               <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/>
               <path d="m13 12 5.88-9.8"/>
@@ -25,18 +25,31 @@
         </li>
       </ul>
       <ul class="navbar-right">
-        <li><a class="navbar-active" href="{% url 'supplements:protein_powders' %}">Proteína Whey</a></li>
-        <li><a href="{% url 'supplements:creatines' %}">Creatina</a></li>
+        <li><a href="{% url 'supplements:protein_powders' %}">Proteína Whey</a></li>
+        <li><a class="navbar-active" href="{% url 'supplements:creatines' %}">Creatina</a></li>
       </ul>
     </header>
     <div class="protein-type-buttons">
-        {% for key, value in types.items %}
-          {% if key == current_type.0 %}
-            <button class="protein-type-button active" onclick="location.href='{% url 'supplements:protein_powders_by_type' key %}'">
+        {% for key, value in forms.items %}
+          {% if key == current_form.0 %}
+            <button class="protein-type-button active" onclick="location.href='{% url 'supplements:creatines_by_type' key current_type.0 %}'">
               {{ value }}
             </button>
           {% else %}
-            <button class="protein-type-button" onclick="location.href='{% url 'supplements:protein_powders_by_type' key %}'">
+            <button class="protein-type-button" onclick="location.href='{% url 'supplements:creatines_by_type' key current_type.0 %}'">
+              {{ value }}
+            </button>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div class="protein-type-buttons">
+        {% for key, value in types.items %}
+          {% if key == current_type.0 %}
+            <button class="protein-type-button active" onclick="location.href='{% url 'supplements:creatines_by_type' current_form.0 key %}'">
+              {{ value }}
+            </button>
+          {% else %}
+            <button class="protein-type-button" onclick="location.href='{% url 'supplements:creatines_by_type' current_form.0 key %}'">
               {{ value }}
             </button>
           {% endif %}
@@ -46,13 +59,13 @@
         <section class="protein-type">
             <h2>{{ current_type.1 }}</h2>
             <div class="protein-list">
-                {% for protein_powder_list in protein_powders %}
-                    <article class="supplement-card" onclick="location.href='{% url 'supplements:detail' protein_powder_list.0.id %}'">
+                {% for creatine_list in creatines %}
+                    <article class="supplement-card" onclick="location.href='{% url 'supplements:detail' creatine_list.0.id %}'">
                         <div class="rank">{{ forloop.counter }}</div>
-                        <img src="{{ protein_powder_list.0.image.url }}" alt="{{ protein_powder_list.0.name }}" class="supplement-image">
+                        <img src="{{ creatine_list.0.image.url }}" alt="{{ creatine_list.0.name }}" class="supplement-image">
                         <div class="supplement-info">
-                            <h3 class="brand-name">{{ protein_powder_list.0.brand.name }}</h3>
-                            <p class="product-name">{{ protein_powder_list.0.name }}</p>
+                            <h3 class="brand-name">{{ creatine_list.0.brand.name }}</h3>
+                            <p class="product-name">{{ creatine_list.0.name }}</p>
                         </div>
                         <div class="price-weight-info">
                             <div class="info-item price">
@@ -61,10 +74,10 @@
                                     <path d="M7 12h5"/>
                                     <path d="M15 9.4a4 4 0 1 0 0 5.2"/>
                                 </svg>
-                                {% if protein_powder_list.1 %}
-                                    <p>{{ protein_powder_list.0.formatted_price }} - {{ protein_powder_list.1.formatted_price }}</p>
+                                {% if creatine_list.1 %}
+                                    <p>{{ creatine_list.0.formatted_price }} - {{ creatine_list.1.formatted_price }}</p>
                                 {% else %}
-                                    <p>{{ protein_powder_list.0.formatted_price }}</p>
+                                    <p>{{ creatine_list.0.formatted_price }}</p>
                                 {% endif %}
                             </div>
                             <div class="info-item weight">
@@ -72,10 +85,10 @@
                                     <circle cx="12" cy="5" r="3"/>
                                     <path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/>
                                 </svg>
-                                {% if protein_powder_list.1 %}
-                                    <p>{{ protein_powder_list.0.formatted_weight }} - {{ protein_powder_list.1.formatted_weight }}</p>
+                                {% if creatine_list.1 %}
+                                    <p>{{ creatine_list.0.formatted_weight }} - {{ creatine_list.1.formatted_weight }}</p>
                                 {% else %}
-                                    <p>{{ protein_powder_list.0.formatted_weight }}</p>
+                                    <p>{{ creatine_list.0.formatted_weight }}</p>
                                 {% endif %}
                             </div>
                         </div>

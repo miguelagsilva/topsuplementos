@@ -8,7 +8,7 @@ class ProteinPowderAdmin(admin.ModelAdmin):
 
 
 class CreatineAdmin(admin.ModelAdmin):
-    list_display = ["name", "weight", "brand", "type", "url"]
+    list_display = ["name", "weight", "brand", "form", "type", "url"]
 
 
 admin.site.register(ProteinPowder, ProteinPowderAdmin)

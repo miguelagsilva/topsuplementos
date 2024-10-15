@@ -10,14 +10,15 @@ class Brand(models.Model):
         return self.name
 
 
-class ProteinPowder(models.Model):
-    PROTEIN_TYPE_CHOICES = [
-        ('isolate', 'Isolado'),
-        ('concentrate', 'Concentrado'),
-        ('clear', 'Clear'),
-        ('blend', 'Blend'),
-    ]
+PROTEIN_TYPE_CHOICES = [
+    ('concentrate', 'Concentrado'),
+    ('isolate', 'Isolado'),
+    ('clear', 'Clear'),
+    ('blend', 'Blend'),
+]
 
+
+class ProteinPowder(models.Model):
     name = models.CharField(max_length=255)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     weight = models.PositiveIntegerField()
@@ -36,12 +37,18 @@ class ProteinPowder(models.Model):
         return float("{:.2f}".format(float(self.price) / (self.weight / 1000)))
 
 
-class Creatine(models.Model):
-    CREATINE_TYPE_CHOICES = [
-        ('monohydrate', 'Monohidratada'),
-        ('creapure', 'Creapure'),
-    ]
+CREATINE_TYPE_CHOICES = [
+    ('monohydrate', 'Monohidratada'),
+    ('creapure', 'Creapure®'),
+    ('micronised', 'Micronizada')
+]
+CREATINE_FORM_CHOICES = [
+    ('powder', 'Pó'),
+    ('capsules', 'Cápsulas'),
+]
 
+
+class Creatine(models.Model):
     name = models.CharField(max_length=255)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     weight = models.PositiveIntegerField()
@@ -50,6 +57,12 @@ class Creatine(models.Model):
         max_length=20,
         choices=CREATINE_TYPE_CHOICES,
     )
+    form = models.CharField(
+        max_length=20,
+        choices=CREATINE_FORM_CHOICES,
+    )
+    capsule_amount = models.PositiveIntegerField(null=True, blank=True)
+    capsule_weight = models.PositiveIntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='protein_powders')
     url = models.URLField()
 
