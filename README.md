@@ -1,3 +1,10 @@
+# TopSuplements
+A web application that features the best deals from many supplement companies on various products using a browser simulator and web scraping techniques.
+
+## Tech Stack
+- Django
+- TailwindCSS + ShadCN
+
 # How to get up and running
 
 ## Get the environment ready
